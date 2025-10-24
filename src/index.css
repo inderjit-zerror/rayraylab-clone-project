@@ -1,0 +1,36 @@
+@import "tailwindcss";
+
+body{
+    background-color: #111111;
+}
+
+@font-face {
+    font-family:AMR;
+    src: url('/font/Azeret-Mono-regular.woff2');
+}
+@font-face {
+    font-family:HNM;
+    src: url('/font/HelveticaNeue-Medium.woff2');
+}
+@font-face {
+    font-family:NH;
+    src: url('/font/NeueHelvetica55Roman_normal_normal.woff2');
+}
+@font-face {
+    font-family:PNR;
+    src: url('/font/PPEditorialNew-Regular.woff2');
+}
+
+.AMR_Font{
+    font-family:AMR;
+}
+
+.HNM_Font{
+    font-family:HNM;
+}
+.NH_Font{
+    font-family:NH;
+}
+.PNR_Font{
+    font-family:PNR;
+}
