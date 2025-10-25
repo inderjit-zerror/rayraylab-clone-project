@@ -1,6 +1,6 @@
 import { useTexture } from "@react-three/drei";
-import { Canvas, useThree } from "@react-three/fiber";
-import { useEffect, useMemo, useRef } from "react";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { DoubleSide } from "three";
 import { PerspectiveCamera } from "@react-three/drei";
 import gsap from "gsap";
@@ -32,6 +32,7 @@ const MainPage = () => {
     const radius = 300;
     const total = 7;
     const { size } = useThree();
+    const uIntroCurve = useRef({ value: 0 });
 
     const vFov = (fov * Math.PI) / 180; // convert to radians
     const viewHeight = 2 * Math.tan(vFov / 2) * distance; // world units visible vertically
@@ -65,6 +66,8 @@ const MainPage = () => {
     useEffect(() => {
       document.body.classList.add("scroll-lock");
 
+      uIntroCurve.current.value = 1.0;
+
       // ✅ Set initial (pre) values
       gsap.set(meshRef.current.rotation, { y: -360 * (Math.PI / 180) * 2 });
       gsap.set(meshRef.current.position, { y: planeHeight * 9 });
@@ -93,6 +96,12 @@ const MainPage = () => {
         },
         "pre1"
       );
+      // ✅ Flatten meshes smoothly after animation finishes
+      FTL.to(uIntroCurve.current, {
+        value: 0,
+        duration: 3.5,
+        ease: "power2.inOut",
+      },'pre1');
 
       FTL.to(
         ".midsection",
@@ -532,10 +541,47 @@ const MainPage = () => {
           },
           "F1"
         );
-
     }, []);
 
-    
+    //  ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // -------------------- SCROLL SPEED DETECTION --------------------
+    const uScrollSpeed = useRef({ value: 0 }); // shared uniform for all meshes
+    const scrollVelocity = useRef(0);
+
+    useEffect(() => {
+      const handleWheel = (e) => {
+        // Use the actual scroll delta speed
+        const delta = Math.abs(e.deltaY);
+
+        // Normalize speed
+        const speed = Math.min(delta / 100, 3.0); // 0 to 3 range
+
+        scrollVelocity.current = speed;
+      };
+
+      window.addEventListener("wheel", handleWheel, { passive: true });
+      window.addEventListener(
+        "touchmove",
+        (e) => {
+          scrollVelocity.current = 1.0; // approximate touch move
+        },
+        { passive: true }
+      );
+
+      return () => {
+        window.removeEventListener("wheel", handleWheel);
+        window.removeEventListener("touchmove", handleWheel);
+      };
+    }, []);
+
+    // -------------------- UPDATE UNIFORM EVERY FRAME --------------------
+    useFrame(() => {
+      uScrollSpeed.current.value +=
+        (scrollVelocity.current - uScrollSpeed.current.value) * 0.1;
+
+      scrollVelocity.current *= 0.9;
+    });
+    //  ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     return (
       <>
@@ -553,7 +599,11 @@ const MainPage = () => {
                   vertexShader={Vertex}
                   fragmentShader={fragmen}
                   side={DoubleSide}
-                  uniforms={{ uTexture: { value: tex } }}
+                  uniforms={{
+                    uTexture: { value: tex },
+                    uScrollSpeed: uScrollSpeed.current,
+                    uIntroCurve: uIntroCurve.current,
+                  }}
                 />
               </mesh>
             );
