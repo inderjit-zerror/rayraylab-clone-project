@@ -24,7 +24,8 @@ const MainPage = () => {
     "/data/img2.webp",
   ];
   const distance = 600;
-  const fov = 2 * Math.atan(window.innerHeight / 2 / distance) * (180 / Math.PI);
+  const fov =
+    2 * Math.atan(window.innerHeight / 2 / distance) * (180 / Math.PI);
 
   // ------------------------------------------- FUNCTIONS --------------------------------------------------
   const MESH = () => {
@@ -68,47 +69,71 @@ const MainPage = () => {
       gsap.set(meshRef.current.rotation, { y: -360 * (Math.PI / 180) * 2 });
       gsap.set(meshRef.current.position, { y: planeHeight * 9 });
       gsap.set(".midsection", { opacity: 0 });
-      gsap.set(".numTextCont", {opacity: 0 });
-      gsap.set(".mentionCont", {opacity: 0 });
-      gsap.set(".bottomImgCont", {opacity: 0 });
+      gsap.set(".numTextCont", { opacity: 0 });
+      gsap.set(".mentionCont", { opacity: 0 });
+      gsap.set(".bottomImgCont", { opacity: 0 });
 
       const FTL = gsap.timeline();
-      FTL.to(meshRef.current.rotation,{
-        y: Math.PI * 1.5,
-        duration: 3,
-        ease: "power2.inOut",
-      },"pre1");
-
-      FTL.to(meshRef.current.position,{
-        y: 0,
-        duration: 3,
-        ease: "power2.inOut",
-      },"pre1");
-
-      FTL.to(".midsection", {
-        opacity: 1,
-        duration: 1,
-        ease: "power3.inOut",
-      },'pre2');
-      FTL.to(".mentionCont", {
-        opacity: 1,
-        duration: 1,
-        ease: "power3.inOut",
-      },'pre2');
-      FTL.to(".bottomImgCont", {
-        opacity: 1,
-        duration: 1,
-        ease: "power3.inOut",
-      },'pre2');
-
-      FTL.to(".numTextCont", {
-        opacity: 1,
-        duration: 1,
-        ease: "power3.inOut",
-        onComplete: () => {
-          document.body.classList.remove("scroll-lock");
+      FTL.to(
+        meshRef.current.rotation,
+        {
+          y: Math.PI * 1.5,
+          duration: 3,
+          ease: "power2.inOut",
         },
-      },'pre2');
+        "pre1"
+      );
+
+      FTL.to(
+        meshRef.current.position,
+        {
+          y: 0,
+          duration: 3,
+          ease: "power2.inOut",
+        },
+        "pre1"
+      );
+
+      FTL.to(
+        ".midsection",
+        {
+          opacity: 1,
+          duration: 1,
+          ease: "power3.inOut",
+        },
+        "pre2"
+      );
+      FTL.to(
+        ".mentionCont",
+        {
+          opacity: 1,
+          duration: 1,
+          ease: "power3.inOut",
+        },
+        "pre2"
+      );
+      FTL.to(
+        ".bottomImgCont",
+        {
+          opacity: 1,
+          duration: 1,
+          ease: "power3.inOut",
+        },
+        "pre2"
+      );
+
+      FTL.to(
+        ".numTextCont",
+        {
+          opacity: 1,
+          duration: 1,
+          ease: "power3.inOut",
+          onComplete: () => {
+            document.body.classList.remove("scroll-lock");
+          },
+        },
+        "pre2"
+      );
     }, []);
 
     // Animations
@@ -120,42 +145,67 @@ const MainPage = () => {
           trigger: ".cont1",
           start: "top 100%",
           end: "bottom top",
-          scrub: 1,
+          scrub: true, // ✅ smoother transition
           invalidateOnRefresh: true,
-          // markers: true,
         },
       });
-      tl1.to(meshRef.current.rotation,{
-        y: Math.PI / 2,
-        ease: "linear",
-      },"a1");
+      tl1.to(
+        meshRef.current.rotation,
+        {
+          y: Math.PI / 2,
+          ease: "linear",
+        },
+        "a1"
+      );
 
-      tl1.to(meshRef.current.position,{
-        y: planeHeight * 1,
-        ease: "linear",
-      },"a1");
+      tl1.to(
+        meshRef.current.position,
+        {
+          y: planeHeight * 1,
+          ease: "linear",
+        },
+        "a1"
+      );
 
-      tl1.to(".displayText",{
-        y: "-70px",
-        direction: 0.01,
-        ease: "power3.inOut",
-      },"a1");
+      tl1.to(
+        ".displayText",
+        {
+          y: "-70px",
+          direction: 0.01,
+          ease: "power3.inOut",
+        },
+        "a1"
+      );
 
-      tl1.to(".numText",{
-        y: "-16px",
-        direction: 0.01,
-        ease: "power3.inOut",
-      },"a1")
-      tl1.to(".mentionText",{
-        y: "-16px",
-        direction: 0.01,
-        ease: "power3.inOut",
-      },"a1")
-      tl1.to(".highlightDiv",{
-        x: "30px",
-        direction: 0.01,
-        ease: "power3.inOut",
-      },"a1")
+      tl1.to(
+        ".numText",
+        {
+          y: "-16px",
+          direction: 0.01,
+          ease: "power3.inOut",
+        },
+        "a1"
+      );
+
+      tl1.to(
+        ".mentionText",
+        {
+          y: "-16px",
+          direction: 0.01,
+          ease: "power3.inOut",
+        },
+        "a1"
+      );
+
+      tl1.to(
+        ".highlightDiv",
+        {
+          x: "30px",
+          direction: 0.01,
+          ease: "power3.inOut",
+        },
+        "a1"
+      );
 
       // ----------------------------------------------- CONT2
 
@@ -165,15 +215,25 @@ const MainPage = () => {
             trigger: ".cont2",
             start: "top top",
             end: "bottom top",
-            scrub: 1,
+            scrub: true, // ✅ smoother transition
             invalidateOnRefresh: true,
             // markers: true,
           },
         })
-        .to(meshRef.current.rotation, { y: -Math.PI / 2, ease: "linear" }, "b1") // rotate further
+        .to(
+          meshRef.current.rotation,
+          {
+            y: -Math.PI / 2,
+            ease: "linear",
+          },
+          "b1"
+        ) // rotate further
         .to(
           meshRef.current.position,
-          { y: planeHeight * 2, ease: "linear" },
+          {
+            y: planeHeight * 2,
+            ease: "linear",
+          },
           "b1"
         )
         .to(
@@ -185,21 +245,33 @@ const MainPage = () => {
           },
           "b1"
         )
-        .to(".numText",{
-          y: "-32px",
-          direction: 0.01,
-          ease: "power3.inOut",
-        },"b1")
-        .to(".mentionText",{
-          y: "-32px",
-          direction: 0.01,
-          ease: "power3.inOut",
-        },"b1")
-        .to(".highlightDiv",{
-          x: "60px",
-          direction: 0.01,
-          ease: "power3.inOut",
-        },"b1")
+        .to(
+          ".numText",
+          {
+            y: "-32px",
+            direction: 0.01,
+            ease: "power3.inOut",
+          },
+          "b1"
+        )
+        .to(
+          ".mentionText",
+          {
+            y: "-32px",
+            direction: 0.01,
+            ease: "power3.inOut",
+          },
+          "b1"
+        )
+        .to(
+          ".highlightDiv",
+          {
+            x: "60px",
+            direction: 0.01,
+            ease: "power3.inOut",
+          },
+          "b1"
+        );
 
       // ----------------------------------------------- CONT3
       gsap
@@ -208,19 +280,25 @@ const MainPage = () => {
             trigger: ".cont3",
             start: "top top",
             end: "bottom top",
-            scrub: 1,
+            scrub: true, // ✅ smoother transition
             invalidateOnRefresh: true,
             // markers: true,
           },
         })
         .to(
           meshRef.current.rotation,
-          { y: -Math.PI * 1.5, ease: "linear" },
+          {
+            y: -Math.PI * 1.5,
+            ease: "linear",
+          },
           "C1"
         ) // rotate further
         .to(
           meshRef.current.position,
-          { y: planeHeight * 3, ease: "linear" },
+          {
+            y: planeHeight * 3,
+            ease: "linear",
+          },
           "C1"
         )
         .to(
@@ -258,7 +336,7 @@ const MainPage = () => {
             ease: "power3.inOut",
           },
           "C1"
-        ) // move further up
+        ); // move further up
 
       // ----------------------------------------------- CONT4
       gsap
@@ -267,19 +345,25 @@ const MainPage = () => {
             trigger: ".cont4",
             start: "top top",
             end: "bottom top",
-            scrub: 1,
+            scrub: true,
             invalidateOnRefresh: true,
             // markers: true,
           },
         })
         .to(
           meshRef.current.rotation,
-          { y: -Math.PI * 2.5, ease: "linear" },
+          {
+            y: -Math.PI * 2.5,
+            ease: "linear",
+          },
           "D1"
         ) // rotate further
         .to(
           meshRef.current.position,
-          { y: planeHeight * 4, ease: "linear" },
+          {
+            y: planeHeight * 4,
+            ease: "linear",
+          },
           "D1"
         )
         .to(
@@ -317,7 +401,7 @@ const MainPage = () => {
             ease: "power3.inOut",
           },
           "D1"
-        ) // move further up
+        ); // move further up
 
       // ----------------------------------------------- CONT5
       gsap
@@ -326,19 +410,25 @@ const MainPage = () => {
             trigger: ".cont5",
             start: "top top",
             end: "bottom top",
-            scrub: 1,
+            scrub: true,
             invalidateOnRefresh: true,
             // markers: true,
           },
         })
         .to(
           meshRef.current.rotation,
-          { y: -Math.PI * 3.5, ease: "linear" },
+          {
+            y: -Math.PI * 3.5,
+            ease: "linear",
+          },
           "E1"
         ) // rotate further
         .to(
           meshRef.current.position,
-          { y: planeHeight * 5, ease: "linear" },
+          {
+            y: planeHeight * 5,
+            ease: "linear",
+          },
           "E1"
         )
         .to(
@@ -376,7 +466,7 @@ const MainPage = () => {
             ease: "power3.inOut",
           },
           "E1"
-        ) // move further up
+        ); // move further up
 
       // ----------------------------------------------- CONT6
       gsap
@@ -385,19 +475,25 @@ const MainPage = () => {
             trigger: ".cont6",
             start: "top top",
             end: "bottom top",
-            scrub: 1,
+            scrub: true,
             invalidateOnRefresh: true,
             // markers: true,
           },
         })
         .to(
           meshRef.current.rotation,
-          { y: -Math.PI * 4.5, ease: "linear" },
+          {
+            y: -Math.PI * 4.5,
+            ease: "linear",
+          },
           "F1"
         ) // rotate further
         .to(
           meshRef.current.position,
-          { y: planeHeight * 6, ease: "linear" },
+          {
+            y: planeHeight * 6,
+            ease: "linear", // ✅ added
+          },
           "F1"
         )
         .to(
@@ -435,8 +531,11 @@ const MainPage = () => {
             ease: "power3.inOut",
           },
           "F1"
-        ) // move further up
+        );
+
     }, []);
+
+    
 
     return (
       <>
@@ -444,9 +543,18 @@ const MainPage = () => {
           {CalculatePosition.map((position, index) => {
             const tex = useTexture(img[index]);
             return (
-              <mesh key={index} position={position} rotation={[0, (index % 2 === 0 ? 0 : Math.PI) + Math.PI / 2, 0]}>
+              <mesh
+                key={index}
+                position={position}
+                rotation={[0, (index % 2 === 0 ? 0 : Math.PI) + Math.PI / 2, 0]}
+              >
                 <planeGeometry args={[planeWidth, planeHeight, 50, 50]} />
-                <shaderMaterial vertexShader={Vertex} fragmentShader={fragmen} side={DoubleSide} uniforms={{uTexture: { value: tex },}}/>
+                <shaderMaterial
+                  vertexShader={Vertex}
+                  fragmentShader={fragmen}
+                  side={DoubleSide}
+                  uniforms={{ uTexture: { value: tex } }}
+                />
               </mesh>
             );
           })}
@@ -461,7 +569,11 @@ const MainPage = () => {
         {/* Canvas Screen on TOP */}
         <div className="w-full h-screen sticky top-0 left-0">
           <Canvas className="w-full h-screen bg-[#121813]">
-            <PerspectiveCamera makeDefault fov={fov} position={[0, 0, distance]}/>
+            <PerspectiveCamera
+              makeDefault
+              fov={fov}
+              position={[0, 0, distance]}
+            />
             <MESH />
           </Canvas>
 
@@ -470,7 +582,6 @@ const MainPage = () => {
             {/* Content */}
             <div className="w-full h-fit flex text-center justify-center items-center pointer-events-none ">
               <div className="w-full h-fit relative flex justify-center pointer-events-none px-[20px]">
-
                 {/* Inner-Center-Div */}
                 <div className=" midsection  w-fit h-[68px] flex flex-col pointer-events-none text-[#f5f5f5] PNR_Font text-[70px] leading-[70px] overflow-hidden  opacity-0 tracking-tight ">
                   <span className="displayText">HILOWAVE</span>
@@ -519,7 +630,6 @@ const MainPage = () => {
                   </span>
                   <span>UXUI, WEB DEVELOPMENT</span>
                 </div>
-
               </div>
             </div>
           </div>
@@ -527,24 +637,25 @@ const MainPage = () => {
           {/* Bottom Content */}
           <div className=" bottomImgCont absolute opacity-0 bottom-0 pointer-events-none left-0 w-full h-[70px] z-[100] flex justify-center items-center">
             <div className="w-fit h-fit flex relative bg-amber-700">
-              {
-                img.map((item, index )=>{
-                  return(
-                    <div key={index} className="w-[30px] h-[40px]  overflow-hidden">
-                      <img className="w-full h-full object-cover" src={item} alt="" />
-                    </div>
-                  )
-                })
-              }
+              {img.map((item, index) => {
+                return (
+                  <div
+                    key={index}
+                    className="w-[30px] h-[40px]  overflow-hidden"
+                  >
+                    <img
+                      className="w-full h-full object-cover"
+                      src={item}
+                      alt=""
+                    />
+                  </div>
+                );
+              })}
 
               {/* HIGHLIGHT */}
-              <div className="highlightDiv w-[40px] pointer-events-none h-[50px] absolute border-[2px] top-[50%] left-[-5px] translate-y-[-49%] bg-none border-white">
-
-              </div>
-
+              <div className="highlightDiv w-[40px] pointer-events-none h-[50px] absolute border-[2px] top-[50%] left-[-5px] translate-y-[-49%] bg-none border-white"></div>
             </div>
           </div>
-
         </div>
 
         {/* This Div help to create a  animation */}

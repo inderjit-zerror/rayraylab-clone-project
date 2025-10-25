@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import MainPage from "./components/MainPage";
 import NavBar from "./components/NavBar";
+import LenisScroll from "./components/LenisScroll";
 
 const App = () => {
-
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -18,20 +18,20 @@ const App = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-
   return (
     <>
-     {isMobile ? (
-        <div className="w-full h-screen flex items-center justify-center bg-[#202020] text-white text-2xl px-[40px]">
-          Not Responsive Yet 🙄.
-          Please Open This Link In Your PC/Laptop.
-        </div>
-      ) : (
-        <div className="w-full h-fit bg-[#202020] relative">
-          <NavBar />
-          <MainPage />
-        </div>
-      )}
+      <LenisScroll>
+        {isMobile ? (
+          <div className="w-full h-screen flex items-center justify-center bg-[#202020] text-white text-2xl px-[40px]">
+            Not Responsive Yet 🙄. Please Open This Link In Your PC/Laptop.
+          </div>
+        ) : (
+          <div className="w-full h-fit bg-[#202020] relative">
+            <NavBar />
+            <MainPage />
+          </div>
+        )}
+      </LenisScroll>
     </>
   );
 };
