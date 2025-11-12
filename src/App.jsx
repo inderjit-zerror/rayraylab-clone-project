@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import MainPage from "./components/MainPage";
 import NavBar from "./components/NavBar";
 import LenisScroll from "./components/LenisScroll";
+import Opening from "./pages/Opening";
+import { Routes, Route} from "react-router-dom";
 
 const App = () => {
   const [isMobile, setIsMobile] = useState(false);
@@ -28,7 +30,12 @@ const App = () => {
         ) : (
           <div className="w-full h-fit bg-[#202020] relative">
             <NavBar />
-            <MainPage />
+
+             <Routes>
+              <Route path="/" element={<MainPage />} />
+              <Route path="/work" element={<Opening/>} />
+             </Routes>
+
           </div>
         )}
       </LenisScroll>

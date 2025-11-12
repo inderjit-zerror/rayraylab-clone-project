@@ -8,6 +8,7 @@ import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Vertex from "../shaders/Vertex.glsl";
 import fragmen from "../shaders/fragmen.glsl";
+import { useNavigate } from "react-router-dom";
 
 gsap.registerPlugin(useGSAP);
 gsap.registerPlugin(ScrollTrigger);
@@ -29,6 +30,7 @@ const MainPage = () => {
 
   // ------------------------------------------- FUNCTIONS --------------------------------------------------
   const MESH = () => {
+    const navigate = useNavigate();
     const radius = 300;
     const total = 7;
     const { size } = useThree();
@@ -97,11 +99,15 @@ const MainPage = () => {
         "pre1"
       );
       // ✅ Flatten meshes smoothly after animation finishes
-      FTL.to(uIntroCurve.current, {
-        value: 0,
-        duration: 3.5,
-        ease: "power2.inOut",
-      },'pre1');
+      FTL.to(
+        uIntroCurve.current,
+        {
+          value: 0,
+          duration: 3.5,
+          ease: "power2.inOut",
+        },
+        "pre1"
+      );
 
       FTL.to(
         ".midsection",
@@ -583,6 +589,56 @@ const MainPage = () => {
     });
     //  ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+    // -------------------------------------------------------------------------------
+
+    const allMeshesRef = useRef([]);
+
+    const MeshActivatedClick = () => {
+      if (!allMeshesRef.current.length) return;
+
+      // GSAP timeline
+      const tl = gsap.timeline({
+        defaults: { duration: 1.5, ease: "power3.inOut" },
+      });
+
+      // scale to 0 and fade out
+      allMeshesRef.current.forEach((mesh, i) => {
+        if (!mesh) return;
+
+        // animate scale down
+        tl.to(
+          mesh.scale,
+          {
+            x: 0,
+            y: 0,
+            z: 0,
+          },
+          0
+        );
+
+        // fade out by reducing material opacity (only works if transparent true)
+        tl.to(
+          mesh.material,
+          {
+            opacity: 0,
+          },
+          0
+        );
+
+        // Other ContData like text & slide Images
+        tl.to(
+          ".OptionCont",
+          {
+            opacity: 0,
+            onComplete: () => {
+              navigate("/work");
+            },
+          },
+          0
+        );
+      });
+    };
+
     return (
       <>
         <group ref={meshRef} rotation={[0, Math.PI * 1.5, 0]}>
@@ -591,8 +647,19 @@ const MainPage = () => {
             return (
               <mesh
                 key={index}
+                onClick={MeshActivatedClick}
                 position={position}
                 rotation={[0, (index % 2 === 0 ? 0 : Math.PI) + Math.PI / 2, 0]}
+                scale={[1, 1, 1]}
+                ref={(el) => (allMeshesRef.current[index] = el)}
+                onPointerOver={(e) => {
+                  e.stopPropagation();
+                  document.body.style.cursor = "pointer";
+                }}
+                onPointerOut={(e) => {
+                  e.stopPropagation();
+                  document.body.style.cursor = "default";
+                }}
               >
                 <planeGeometry args={[planeWidth, planeHeight, 50, 50]} />
                 <shaderMaterial
@@ -628,7 +695,7 @@ const MainPage = () => {
           </Canvas>
 
           {/* Top-Text-Cont */}
-          <div className="w-full h-screen absolute top-0 left-0 flex pointer-events-none justify-center items-center">
+          <div className="w-full OptionCont h-screen absolute top-0 left-0 flex pointer-events-none justify-center items-center">
             {/* Content */}
             <div className="w-full h-fit flex text-center justify-center items-center pointer-events-none ">
               <div className="w-full h-fit relative flex justify-center pointer-events-none px-[20px]">
@@ -685,7 +752,7 @@ const MainPage = () => {
           </div>
 
           {/* Bottom Content */}
-          <div className=" bottomImgCont absolute opacity-0 bottom-0 pointer-events-none left-0 w-full h-[70px] z-[100] flex justify-center items-center">
+          <div className=" bottomImgCont OptionCont absolute opacity-0 bottom-0 pointer-events-none left-0 w-full h-[70px] z-[100] flex justify-center items-center">
             <div className="w-fit h-fit flex relative bg-amber-700">
               {img.map((item, index) => {
                 return (
